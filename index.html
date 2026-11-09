@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Control de Personal · Maíz &amp; Yuca</title>
+  <meta name="description" content="Sistema de control de personal y procesos — FINAV">
+  <meta name="theme-color" content="#072B59">
+  <link rel="icon" type="image/jpeg" href="assets/logo-maiz-yuca.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <!-- ============ CABECERA ============ -->
+  <header class="topbar">
+    <div class="topbar__brand">
+      <img src="assets/logo-maiz-yuca.jpg" alt="Maíz & Yuca Cafetería" class="topbar__logo">
+      <div>
+        <div class="topbar__title" id="empresaNombre">Maíz &amp; Yuca</div>
+        <div class="topbar__sub">Sistema de Control de Personal y Procesos</div>
+      </div>
+    </div>
+    <div class="topbar__right">
+      <span class="conn" id="connBadge" title="Estado de conexión"><span class="conn__dot"></span><span id="connText">Conectando…</span></span>
+      <div class="topbar__clock" aria-live="off">
+        <span id="tbTime">--:--</span>
+        <small id="tbDate">—</small>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ PESTAÑAS ============ -->
+  <nav class="tabs" role="tablist" aria-label="Módulos del sistema">
+    <button class="tab is-active" role="tab" aria-selected="true" data-tab="personal">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0 2c-4 0-8 2-8 5v1h16v-1c0-3-4-5-8-5Z"/></svg>
+      Control de Personal
+    </button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="apertura">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V9l8-6 8 6v12h-6v-6h-4v6H4Z"/></svg>
+      Apertura de Local <span class="tab__badge">Mantenimiento</span>
+    </button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="caja">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h18v12H3zM6 4h12v3H6zm6 6a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/></svg>
+      Cierre de Caja <span class="tab__badge">Mantenimiento</span>
+    </button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="inventario">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7l9-4 9 4v10l-9 4-9-4V7Zm9 1.2L5.6 5.6M12 8.2l6.4-2.6M12 8.2V21"/></svg>
+      Inventario <span class="tab__badge">Mantenimiento</span>
+    </button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="reportes">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10h3v10H4Zm6.5 0V4h3v16h-3ZM17 20v-7h3v7h-3Z"/></svg>
+      Reportes <span class="tab__badge">Mantenimiento</span>
+    </button>
+  </nav>
+
+  <div class="demo-banner" id="demoBanner" hidden>
+    <strong>Modo demostración:</strong> no hay conexión configurada a Google Sheets. Pruebe con <code>demo</code> / <code>demo123</code>.
+  </div>
+
+  <main class="main">
+    <!-- ============ MÓDULO: CONTROL DE PERSONAL ============ -->
+    <section class="module" id="mod-personal" role="tabpanel">
+      <div class="layout">
+        <!-- Panel izquierdo: reloj -->
+        <aside class="clockpanel">
+          <div class="clockpanel__label">Hora oficial del sistema</div>
+          <div class="clockpanel__time" id="bigTime">--:--<span id="bigSec">:--</span></div>
+          <div class="clockpanel__date" id="bigDate">—</div>
+          <div class="clockpanel__rule"></div>
+          <ol class="howto">
+            <li><span>1</span>Ingrese su usuario y contraseña.</li>
+            <li><span>2</span>Seleccione el evento a registrar.</li>
+            <li><span>3</span><em>Confirme y presione <b>Aceptar</b>.</em></li>
+          </ol>
+          <div class="clockpanel__brand">
+            <small>Tecnología provista por</small>
+            <img src="assets/logo-finav.png" alt="FINAV Financial Advisor">
+          </div>
+        </aside>
+
+        <!-- Panel derecho: flujo -->
+        <div class="flow">
+          <!-- Paso 1: Login -->
+          <div class="card step" id="stepLogin">
+            <div class="card__head">
+              <h1>Registro de asistencia</h1>
+              <p>Identifíquese para marcar su evento.</p>
+            </div>
+            <form id="loginForm" autocomplete="off" novalidate>
+              <label class="field">
+                <span>Usuario</span>
+                <div class="field__ctrl">
+                  <svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0 2c-4 0-8 2-8 5v1h16v-1c0-3-4-5-8-5Z"/></svg>
+                  <input id="inUser" name="usuario" type="text" inputmode="text" autocapitalize="none" spellcheck="false" placeholder="ej. jperez" required>
+                </div>
+              </label>
+              <label class="field">
+                <span>Contraseña</span>
+                <div class="field__ctrl">
+                  <svg viewBox="0 0 24 24"><path d="M7 10V7a5 5 0 0 1 10 0v3h1a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h1Zm2 0h6V7a3 3 0 0 0-6 0v3Z"/></svg>
+                  <input id="inPass" name="password" type="password" placeholder="••••••••" required>
+                  <button type="button" class="eye" id="togglePass" aria-label="Mostrar contraseña">
+                    <svg viewBox="0 0 24 24"><path d="M12 5c5 0 9 4.5 10 7-1 2.5-5 7-10 7S3 14.5 2 12c1-2.5 5-7 10-7Zm0 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z"/></svg>
+                  </button>
+                </div>
+              </label>
+              <div class="caps" id="capsWarn" hidden>Bloq Mayús está activado</div>
+              <div class="alert" id="loginError" role="alert" hidden></div>
+              <button class="btn btn--primary btn--block" type="submit" id="btnLogin">
+                <span class="btn__label">Ingresar</span>
+                <span class="spinner" aria-hidden="true"></span>
+              </button>
+            </form>
+          </div>
+
+          <!-- Paso 2: Selección de evento -->
+          <div class="card step" id="stepEvents" hidden>
+            <div class="who">
+              <div class="who__avatar" id="whoAvatar">--</div>
+              <div class="who__info">
+                <div class="who__hello">Hola, <strong id="whoName">—</strong></div>
+                <div class="who__meta" id="whoMeta">—</div>
+              </div>
+              <span class="chip" id="statusChip">—</span>
+            </div>
+
+            <div class="timeline" id="timeline" aria-label="Eventos de la jornada"></div>
+
+            <div class="section-title">Seleccione el evento a registrar</div>
+            <div class="events" id="eventsGrid"></div>
+
+            <div class="permiso" id="permisoBox" hidden>
+              <div class="section-title">Motivo del permiso temporal</div>
+              <div class="motivos" id="motivos">
+                <button type="button" data-m="Cita médica">Cita médica</button>
+                <button type="button" data-m="Trámite personal">Trámite personal</button>
+                <button type="button" data-m="Diligencia de la empresa">Diligencia de la empresa</button>
+                <button type="button" data-m="Calamidad doméstica">Calamidad doméstica</button>
+                <button type="button" data-m="Otro">Otro</button>
+              </div>
+              <input id="motivoDetalle" class="input" type="text" maxlength="150" placeholder="Detalle (opcional, obligatorio si elige «Otro»)">
+              <div class="permiso__actions">
+                <button type="button" class="btn btn--ghost" id="btnPermisoCancel">Volver</button>
+                <button type="button" class="btn btn--gold" id="btnPermisoOk" disabled>Continuar</button>
+              </div>
+            </div>
+
+            <div class="alert" id="eventError" role="alert" hidden></div>
+
+            <div class="step__foot">
+              <button type="button" class="btn btn--ghost" id="btnCancel">
+                <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg> Cancelar y salir
+              </button>
+              <div class="session" title="Tiempo restante de la sesión">
+                <div class="session__bar"><i id="sessionBar"></i></div>
+                <span id="sessionTxt">90 s</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ MÓDULOS EN MANTENIMIENTO ============ -->
+    <section class="module" id="mod-maint" role="tabpanel" hidden>
+      <div class="maint card">
+        <div class="maint__icon">
+          <svg viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4 2.6-2.6Z"/></svg>
+        </div>
+        <h2 id="maintTitle">Módulo en mantenimiento</h2>
+        <p id="maintText">Este módulo se encuentra en desarrollo y estará disponible en una próxima versión.</p>
+        <ul class="maint__list" id="maintList"></ul>
+        <button class="btn btn--primary" id="btnBackPersonal">Ir a Control de Personal</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <img src="assets/logo-finav.png" alt="FINAV">
+    <span>© <span id="year"></span> FINAV Financial Advisor · Control de Personal v1.0</span>
+  </footer>
+
+  <!-- ============ MODAL: CONFIRMAR ============ -->
+  <div class="modal" id="confirmModal" hidden role="dialog" aria-modal="true" aria-labelledby="cfTitle">
+    <div class="modal__box">
+      <div class="modal__icon modal__icon--ask" id="cfIcon"></div>
+      <h3 id="cfTitle">¿Confirmar registro?</h3>
+      <p id="cfText"></p>
+      <p class="modal__note">Una vez registrado, el evento no podrá modificarse.</p>
+      <div class="modal__actions">
+        <button class="btn btn--ghost" id="cfNo">Volver</button>
+        <button class="btn btn--primary" id="cfYes"><span class="btn__label">Registrar</span><span class="spinner"></span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ MODAL: ÉXITO ============ -->
+  <div class="modal" id="okModal" hidden role="alertdialog" aria-modal="true" aria-labelledby="okTitle">
+    <div class="modal__box modal__box--ok">
+      <div class="modal__icon modal__icon--ok">
+        <svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="24"/><path d="M15 27l7 7 15-16"/></svg>
+      </div>
+      <div class="okmsg" id="okTitle">Evento <strong id="okEvent">—</strong></div>
+      <div class="okmsg__time">Hora: <strong id="okHora">--:--:--</strong>; Fecha: <strong id="okFecha">--/--/----</strong></div>
+      <div class="okmsg__who" id="okWho"></div>
+      <button class="btn btn--primary btn--block btn--lg" id="okAccept">Aceptar</button>
+      <div class="okmsg__auto" id="okAuto"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" hidden></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
