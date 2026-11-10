@@ -11,6 +11,7 @@ window.FINAV_CONFIG = {
   EMPRESA: 'Maíz & Yuca',
   SUBTITULO: 'Cafetería',
   TIMEZONE: 'America/Guayaquil',
+  TZ_OFFSET: '-05:00',             // Ecuador no tiene horario de verano
   SEGUNDOS_INACTIVIDAD: 90,      // vuelve al login si el usuario no actúa
   SEGUNDOS_AUTOCIERRE_MENSAJE: 30 // cierra el mensaje de confirmación si nadie presiona Aceptar
 };
