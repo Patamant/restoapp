@@ -6,207 +6,307 @@
   <title>Control de Personal · Maíz &amp; Yuca</title>
   <meta name="description" content="Sistema de control de personal y procesos — FINAV">
   <meta name="theme-color" content="#072B59">
+  <meta name="apple-mobile-web-app-capable" content="yes">
   <link rel="icon" type="image/jpeg" href="assets/logo-maiz-yuca.jpg">
+  <link rel="apple-touch-icon" href="assets/logo-maiz-yuca.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <!-- ============ CABECERA ============ -->
-  <header class="topbar">
-    <div class="topbar__brand">
-      <img src="assets/logo-maiz-yuca.jpg" alt="Maíz & Yuca Cafetería" class="topbar__logo">
-      <div>
-        <div class="topbar__title" id="empresaNombre">Maíz &amp; Yuca</div>
-        <div class="topbar__sub">Sistema de Control de Personal y Procesos</div>
+
+  <!-- ================= CABECERA ================= -->
+  <header class="hdr">
+    <div class="hdr__in">
+      <a class="brand" href="./" aria-label="Inicio">
+        <img src="assets/logo-maiz-yuca.jpg" alt="Maíz & Yuca Cafetería" class="brand__logo">
+        <span class="brand__txt">
+          <strong id="empresaNombre">Maíz &amp; Yuca</strong>
+          <small>Control de Personal y Procesos</small>
+        </span>
+      </a>
+
+      <div class="hdr__right">
+        <span class="conn" id="connBadge" title="Estado de conexión">
+          <i class="conn__dot"></i><span id="connText">Conectando…</span>
+        </span>
+        <div class="hdr__clock" aria-hidden="true">
+          <strong id="tbTime">--:--</strong>
+          <small id="tbDate">—</small>
+        </div>
+        <button class="iconbtn" id="btnFull" type="button" title="Pantalla completa (modo kiosco)" aria-label="Pantalla completa">
+          <svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
+        </button>
       </div>
     </div>
-    <div class="topbar__right">
-      <span class="conn" id="connBadge" title="Estado de conexión"><span class="conn__dot"></span><span id="connText">Conectando…</span></span>
-      <div class="topbar__clock" aria-live="off">
-        <span id="tbTime">--:--</span>
-        <small id="tbDate">—</small>
-      </div>
-    </div>
+
+    <!-- Pestañas (arriba en escritorio, barra inferior en móvil) -->
+    <nav class="tabs" role="tablist" aria-label="Módulos del sistema">
+      <button class="tab is-active" role="tab" aria-selected="true" data-tab="personal">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+        <span class="tab__lbl">Control de Personal</span><span class="tab__short">Personal</span>
+      </button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="apertura">
+        <svg viewBox="0 0 24 24"><path d="M3 10l9-7 9 7v11H3z"/><path d="M9 21v-6h6v6"/></svg>
+        <span class="tab__lbl">Apertura de Local</span><span class="tab__short">Apertura</span><i class="tab__soon">Pronto</i>
+      </button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="caja">
+        <svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M7 7V4h10v3"/><circle cx="12" cy="13.5" r="2.5"/></svg>
+        <span class="tab__lbl">Cierre de Caja</span><span class="tab__short">Caja</span><i class="tab__soon">Pronto</i>
+      </button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="inventario">
+        <svg viewBox="0 0 24 24"><path d="M3 7l9-4 9 4v10l-9 4-9-4z"/><path d="M3 7l9 4 9-4M12 11v10"/></svg>
+        <span class="tab__lbl">Inventario</span><span class="tab__short">Inventario</span><i class="tab__soon">Pronto</i>
+      </button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="reportes">
+        <svg viewBox="0 0 24 24"><path d="M4 20V11M10 20V4M16 20v-7M22 20H2"/></svg>
+        <span class="tab__lbl">Reportes</span><span class="tab__short">Reportes</span><i class="tab__soon">Pronto</i>
+      </button>
+    </nav>
   </header>
 
-  <!-- ============ PESTAÑAS ============ -->
-  <nav class="tabs" role="tablist" aria-label="Módulos del sistema">
-    <button class="tab is-active" role="tab" aria-selected="true" data-tab="personal">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0 2c-4 0-8 2-8 5v1h16v-1c0-3-4-5-8-5Z"/></svg>
-      Control de Personal
-    </button>
-    <button class="tab" role="tab" aria-selected="false" data-tab="apertura">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V9l8-6 8 6v12h-6v-6h-4v6H4Z"/></svg>
-      Apertura de Local <span class="tab__badge">Mantenimiento</span>
-    </button>
-    <button class="tab" role="tab" aria-selected="false" data-tab="caja">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h18v12H3zM6 4h12v3H6zm6 6a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/></svg>
-      Cierre de Caja <span class="tab__badge">Mantenimiento</span>
-    </button>
-    <button class="tab" role="tab" aria-selected="false" data-tab="inventario">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7l9-4 9 4v10l-9 4-9-4V7Zm9 1.2L5.6 5.6M12 8.2l6.4-2.6M12 8.2V21"/></svg>
-      Inventario <span class="tab__badge">Mantenimiento</span>
-    </button>
-    <button class="tab" role="tab" aria-selected="false" data-tab="reportes">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10h3v10H4Zm6.5 0V4h3v16h-3ZM17 20v-7h3v7h-3Z"/></svg>
-      Reportes <span class="tab__badge">Mantenimiento</span>
-    </button>
-  </nav>
-
-  <div class="demo-banner" id="demoBanner" hidden>
-    <strong>Modo demostración:</strong> no hay conexión configurada a Google Sheets. Pruebe con <code>demo</code> / <code>demo123</code>.
+  <div class="demo" id="demoBanner" hidden>
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+    <span><b>Modo demostración</b> — sin conexión a Google Sheets. Use <code>demo</code> / <code>demo123</code></span>
   </div>
 
   <main class="main">
-    <!-- ============ MÓDULO: CONTROL DE PERSONAL ============ -->
-    <section class="module" id="mod-personal" role="tabpanel">
-      <div class="layout">
-        <!-- Panel izquierdo: reloj -->
-        <aside class="clockpanel">
-          <div class="clockpanel__label">Hora oficial del sistema</div>
-          <div class="clockpanel__time" id="bigTime">--:--<span id="bigSec">:--</span></div>
-          <div class="clockpanel__date" id="bigDate">—</div>
-          <div class="clockpanel__rule"></div>
-          <ol class="howto">
-            <li><span>1</span>Ingrese su usuario y contraseña.</li>
-            <li><span>2</span>Seleccione el evento a registrar.</li>
-            <li><span>3</span><em>Confirme y presione <b>Aceptar</b>.</em></li>
-          </ol>
-          <div class="clockpanel__brand">
-            <small>Tecnología provista por</small>
-            <img src="assets/logo-finav.png" alt="FINAV Financial Advisor">
-          </div>
-        </aside>
 
-        <!-- Panel derecho: flujo -->
-        <div class="flow">
-          <!-- Paso 1: Login -->
-          <div class="card step" id="stepLogin">
-            <div class="card__head">
-              <h1>Registro de asistencia</h1>
-              <p>Identifíquese para marcar su evento.</p>
+    <!-- ================= MÓDULO CONTROL DE PERSONAL ================= -->
+    <section class="mod mod--personal" id="mod-personal" role="tabpanel">
+
+      <!-- Columna informativa -->
+      <aside class="side">
+        <div class="clock">
+          <div class="clock__ring">
+            <svg viewBox="0 0 120 120" aria-hidden="true">
+              <circle class="clock__track" cx="60" cy="60" r="54"/>
+              <circle class="clock__prog" id="secRing" cx="60" cy="60" r="54"/>
+            </svg>
+            <div class="clock__face">
+              <strong id="bigTime">--:--</strong>
+              <span id="bigSec">--</span>
             </div>
+          </div>
+          <div class="clock__info">
+            <div class="clock__greet" id="greet">Bienvenido</div>
+            <div class="clock__date" id="bigDate">—</div>
+            <div class="clock__tz">Hora oficial · Ecuador (GMT‑5)</div>
+          </div>
+        </div>
+
+        <div class="guide">
+          <h3>¿Cómo registrar?</h3>
+          <ol>
+            <li><span><b>Identifíquese</b> con su usuario y contraseña.</span></li>
+            <li><span><b>Elija el evento</b>: solo se habilitan los que corresponden.</span></li>
+            <li><span><b>Confirme</b> y presione <b>Aceptar</b>.</span></li>
+          </ol>
+          <div class="guide__legend">
+            <span><i class="lg lg--ok"></i>Disponible</span>
+            <span><i class="lg lg--off"></i>Bloqueado</span>
+            <span><i class="lg lg--done"></i>Registrado</span>
+          </div>
+        </div>
+
+        <div class="powered">
+          <small>Tecnología provista por</small>
+          <img src="assets/logo-finav.png" alt="FINAV Financial Advisor">
+        </div>
+      </aside>
+
+      <!-- Área de trabajo -->
+      <div class="work">
+        <ol class="stepper" id="stepper" aria-label="Progreso">
+          <li class="is-current" data-s="1"><span class="stepper__n">1</span><span class="stepper__t">Identificación</span></li>
+          <li data-s="2"><span class="stepper__n">2</span><span class="stepper__t">Evento</span></li>
+          <li data-s="3"><span class="stepper__n">3</span><span class="stepper__t">Confirmación</span></li>
+        </ol>
+
+        <!-- ===== VISTA 1: LOGIN ===== -->
+        <div class="view card" id="vLogin">
+          <div class="login">
+            <div class="login__head">
+              <div class="login__badge">
+                <svg viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+              </div>
+              <div>
+                <h1>Registro de asistencia</h1>
+                <p>Ingrese sus credenciales para marcar un evento.</p>
+              </div>
+            </div>
+
             <form id="loginForm" autocomplete="off" novalidate>
-              <label class="field">
-                <span>Usuario</span>
-                <div class="field__ctrl">
-                  <svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0 2c-4 0-8 2-8 5v1h16v-1c0-3-4-5-8-5Z"/></svg>
-                  <input id="inUser" name="usuario" type="text" inputmode="text" autocapitalize="none" spellcheck="false" placeholder="ej. jperez" required>
-                </div>
-              </label>
-              <label class="field">
-                <span>Contraseña</span>
-                <div class="field__ctrl">
-                  <svg viewBox="0 0 24 24"><path d="M7 10V7a5 5 0 0 1 10 0v3h1a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h1Zm2 0h6V7a3 3 0 0 0-6 0v3Z"/></svg>
-                  <input id="inPass" name="password" type="password" placeholder="••••••••" required>
-                  <button type="button" class="eye" id="togglePass" aria-label="Mostrar contraseña">
-                    <svg viewBox="0 0 24 24"><path d="M12 5c5 0 9 4.5 10 7-1 2.5-5 7-10 7S3 14.5 2 12c1-2.5 5-7 10-7Zm0 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z"/></svg>
-                  </button>
-                </div>
-              </label>
-              <div class="caps" id="capsWarn" hidden>Bloq Mayús está activado</div>
-              <div class="alert" id="loginError" role="alert" hidden></div>
-              <button class="btn btn--primary btn--block" type="submit" id="btnLogin">
+              <div class="fld">
+                <input id="inUser" type="text" autocapitalize="none" autocomplete="off" spellcheck="false" placeholder=" " required>
+                <label for="inUser">Usuario</label>
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+              </div>
+              <div class="fld">
+                <input id="inPass" type="password" autocomplete="off" placeholder=" " required>
+                <label for="inPass">Contraseña</label>
+                <svg viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+                <button type="button" class="fld__eye" id="togglePass" aria-label="Mostrar contraseña">
+                  <svg viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+              </div>
+              <div class="hint hint--warn" id="capsWarn" hidden>⇪ Bloq Mayús está activado</div>
+              <div class="msg msg--err" id="loginError" role="alert" hidden></div>
+
+              <button class="btn btn--primary btn--xl btn--block" type="submit" id="btnLogin">
                 <span class="btn__label">Ingresar</span>
-                <span class="spinner" aria-hidden="true"></span>
+                <svg class="btn__arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                <span class="spin"></span>
               </button>
             </form>
+
+            <p class="login__foot">
+              <svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg>
+              Sus registros quedan protegidos y no pueden modificarse.
+            </p>
+          </div>
+        </div>
+
+        <!-- ===== VISTA 2: EVENTOS ===== -->
+        <div class="view" id="vEvents" hidden>
+
+          <!-- Tarjeta del colaborador -->
+          <div class="card who">
+            <div class="who__avatar" id="whoAvatar">--</div>
+            <div class="who__main">
+              <div class="who__name" id="whoName">—</div>
+              <div class="who__meta" id="whoMeta">—</div>
+            </div>
+            <div class="who__status">
+              <span class="pill" id="statusPill"><i></i><span id="statusTxt">—</span></span>
+              <div class="who__since" id="statusSince"></div>
+            </div>
           </div>
 
-          <!-- Paso 2: Selección de evento -->
-          <div class="card step" id="stepEvents" hidden>
-            <div class="who">
-              <div class="who__avatar" id="whoAvatar">--</div>
-              <div class="who__info">
-                <div class="who__hello">Hola, <strong id="whoName">—</strong></div>
-                <div class="who__meta" id="whoMeta">—</div>
-              </div>
-              <span class="chip" id="statusChip">—</span>
-            </div>
-
-            <div class="timeline" id="timeline" aria-label="Eventos de la jornada"></div>
-
-            <div class="section-title">Seleccione el evento a registrar</div>
-            <div class="events" id="eventsGrid"></div>
-
-            <div class="permiso" id="permisoBox" hidden>
-              <div class="section-title">Motivo del permiso temporal</div>
-              <div class="motivos" id="motivos">
-                <button type="button" data-m="Cita médica">Cita médica</button>
-                <button type="button" data-m="Trámite personal">Trámite personal</button>
-                <button type="button" data-m="Diligencia de la empresa">Diligencia de la empresa</button>
-                <button type="button" data-m="Calamidad doméstica">Calamidad doméstica</button>
-                <button type="button" data-m="Otro">Otro</button>
-              </div>
-              <input id="motivoDetalle" class="input" type="text" maxlength="150" placeholder="Detalle (opcional, obligatorio si elige «Otro»)">
-              <div class="permiso__actions">
-                <button type="button" class="btn btn--ghost" id="btnPermisoCancel">Volver</button>
-                <button type="button" class="btn btn--gold" id="btnPermisoOk" disabled>Continuar</button>
+          <!-- Línea de la jornada -->
+          <div class="card journey">
+            <div class="journey__head">
+              <h2 id="journeyTitle">Jornada de hoy</h2>
+              <div class="journey__timer" id="journeyTimer" hidden>
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M9 2h6"/></svg>
+                <span id="timerVal">00:00:00</span>
               </div>
             </div>
+            <div class="track" id="track">
+              <div class="track__line"><i id="trackFill"></i></div>
+              <div class="track__nodes" id="trackNodes"></div>
+            </div>
+            <div class="perms" id="perms"></div>
+          </div>
 
-            <div class="alert" id="eventError" role="alert" hidden></div>
+          <!-- Acciones -->
+          <div class="card actions">
+            <div class="actions__head">
+              <h2>¿Qué desea registrar?</h2>
+              <div class="msg msg--err msg--inline" id="eventError" role="alert" hidden></div>
+            </div>
+            <div class="groups" id="groups"></div>
+          </div>
 
-            <div class="step__foot">
-              <button type="button" class="btn btn--ghost" id="btnCancel">
-                <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg> Cancelar y salir
-              </button>
-              <div class="session" title="Tiempo restante de la sesión">
-                <div class="session__bar"><i id="sessionBar"></i></div>
-                <span id="sessionTxt">90 s</span>
-              </div>
+          <div class="bar">
+            <button type="button" class="btn btn--ghost" id="btnCancel">
+              <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+              <span>Salir</span>
+            </button>
+            <div class="idle" title="La sesión se cerrará por inactividad">
+              <svg viewBox="0 0 36 36" class="idle__ring"><circle cx="18" cy="18" r="15"/><circle id="idleRing" cx="18" cy="18" r="15"/></svg>
+              <span>Cierre automático en <b id="idleTxt">90</b> s</span>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ============ MÓDULOS EN MANTENIMIENTO ============ -->
-    <section class="module" id="mod-maint" role="tabpanel" hidden>
-      <div class="maint card">
-        <div class="maint__icon">
-          <svg viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4 2.6-2.6Z"/></svg>
+    <!-- ================= MÓDULOS EN MANTENIMIENTO ================= -->
+    <section class="mod" id="mod-maint" role="tabpanel" hidden>
+      <div class="card maint">
+        <div class="maint__art" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></svg>
         </div>
-        <h2 id="maintTitle">Módulo en mantenimiento</h2>
-        <p id="maintText">Este módulo se encuentra en desarrollo y estará disponible en una próxima versión.</p>
-        <ul class="maint__list" id="maintList"></ul>
-        <button class="btn btn--primary" id="btnBackPersonal">Ir a Control de Personal</button>
+        <span class="maint__tag">En mantenimiento</span>
+        <h2 id="maintTitle">Módulo</h2>
+        <p>Este módulo está en desarrollo y se habilitará en una próxima entrega.</p>
+        <div class="maint__grid" id="maintList"></div>
+        <button class="btn btn--primary" id="btnBackPersonal">
+          <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg> Volver a Control de Personal
+        </button>
       </div>
     </section>
   </main>
 
-  <footer class="footer">
+  <footer class="foot">
     <img src="assets/logo-finav.png" alt="FINAV">
-    <span>© <span id="year"></span> FINAV Financial Advisor · Control de Personal v1.0</span>
+    <span>© <span id="year"></span> FINAV Financial Advisor · v1.1</span>
   </footer>
 
-  <!-- ============ MODAL: CONFIRMAR ============ -->
-  <div class="modal" id="confirmModal" hidden role="dialog" aria-modal="true" aria-labelledby="cfTitle">
-    <div class="modal__box">
-      <div class="modal__icon modal__icon--ask" id="cfIcon"></div>
-      <h3 id="cfTitle">¿Confirmar registro?</h3>
-      <p id="cfText"></p>
-      <p class="modal__note">Una vez registrado, el evento no podrá modificarse.</p>
-      <div class="modal__actions">
-        <button class="btn btn--ghost" id="cfNo">Volver</button>
-        <button class="btn btn--primary" id="cfYes"><span class="btn__label">Registrar</span><span class="spinner"></span></button>
+  <!-- ================= HOJA: MOTIVO DE PERMISO ================= -->
+  <div class="modal" id="permModal" hidden role="dialog" aria-modal="true" aria-labelledby="permTitle">
+    <div class="sheet">
+      <div class="sheet__grip"></div>
+      <h3 id="permTitle">Motivo del permiso temporal</h3>
+      <p class="sheet__sub">Seleccione una opción. Este dato queda registrado junto a la hora de salida.</p>
+      <div class="motivos" id="motivos">
+        <button type="button" data-m="Cita médica"><span>🩺</span>Cita médica</button>
+        <button type="button" data-m="Trámite personal"><span>📄</span>Trámite personal</button>
+        <button type="button" data-m="Diligencia de la empresa"><span>💼</span>Diligencia de la empresa</button>
+        <button type="button" data-m="Calamidad doméstica"><span>🏠</span>Calamidad doméstica</button>
+        <button type="button" data-m="Otro"><span>✏️</span>Otro</button>
+      </div>
+      <div class="fld fld--plain">
+        <input id="motivoDetalle" type="text" maxlength="150" placeholder=" ">
+        <label for="motivoDetalle" id="motivoLbl">Detalle (opcional)</label>
+      </div>
+      <div class="sheet__actions">
+        <button type="button" class="btn btn--ghost" id="permCancel">Cancelar</button>
+        <button type="button" class="btn btn--gold" id="permOk" disabled>Continuar</button>
       </div>
     </div>
   </div>
 
-  <!-- ============ MODAL: ÉXITO ============ -->
-  <div class="modal" id="okModal" hidden role="alertdialog" aria-modal="true" aria-labelledby="okTitle">
-    <div class="modal__box modal__box--ok">
-      <div class="modal__icon modal__icon--ok">
+  <!-- ================= HOJA: CONFIRMAR ================= -->
+  <div class="modal" id="confirmModal" hidden role="dialog" aria-modal="true" aria-labelledby="cfTitle">
+    <div class="sheet sheet--center">
+      <div class="sheet__grip"></div>
+      <div class="cf__icon" id="cfIcon"></div>
+      <h3 id="cfTitle">Confirmar registro</h3>
+      <div class="cf__evt" id="cfEvt">—</div>
+      <dl class="cf__data">
+        <div><dt>Colaborador</dt><dd id="cfWho">—</dd></div>
+        <div><dt>Hora aproximada</dt><dd id="cfTime">—</dd></div>
+        <div id="cfMotivoRow" hidden><dt>Motivo</dt><dd id="cfMotivo">—</dd></div>
+      </dl>
+      <p class="cf__note">Una vez registrado, el evento no podrá modificarse.</p>
+      <div class="sheet__actions">
+        <button class="btn btn--ghost" id="cfNo">Volver</button>
+        <button class="btn btn--primary" id="cfYes"><span class="btn__label">Registrar</span><span class="spin"></span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= ÉXITO ================= -->
+  <div class="modal modal--ok" id="okModal" hidden role="alertdialog" aria-modal="true" aria-labelledby="okTitle">
+    <div class="sheet sheet--center sheet--ok">
+      <div class="burst" id="burst"></div>
+      <div class="ok__icon">
         <svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="24"/><path d="M15 27l7 7 15-16"/></svg>
       </div>
-      <div class="okmsg" id="okTitle">Evento <strong id="okEvent">—</strong></div>
-      <div class="okmsg__time">Hora: <strong id="okHora">--:--:--</strong>; Fecha: <strong id="okFecha">--/--/----</strong></div>
-      <div class="okmsg__who" id="okWho"></div>
-      <button class="btn btn--primary btn--block btn--lg" id="okAccept">Aceptar</button>
-      <div class="okmsg__auto" id="okAuto"></div>
+      <div class="ok__title" id="okTitle">Evento <strong id="okEvent">—</strong></div>
+      <div class="ok__when">
+        <div><small>Hora</small><strong id="okHora">--:--:--</strong></div>
+        <div><small>Fecha</small><strong id="okFecha">--/--/----</strong></div>
+      </div>
+      <div class="ok__who" id="okWho"></div>
+      <button class="btn btn--primary btn--xl btn--block btn--count" id="okAccept">
+        <span class="btn__label">Aceptar</span>
+        <i class="btn__count" id="okBar"></i>
+      </button>
+      <div class="ok__auto" id="okAuto"></div>
     </div>
   </div>
 
