@@ -422,6 +422,35 @@ body { --nav-h: 66px; }
 .cf__data dd { margin: 0; font-weight: 700; color: var(--ink); text-align: right; font-variant-numeric: tabular-nums; }
 .cf__note { color: var(--muted); font-size: .78rem; margin: 12px 0 0; }
 
+/* Pregunta: responsable de apertura de tienda */
+.ap { margin-top: 14px; padding: 14px; border-radius: 14px; background: var(--gold-50); border: 1px solid #EBDDBF; text-align: left; animation: viewIn .35s var(--ease) both; }
+.ap__q { display: flex; align-items: center; gap: 10px; font-weight: 700; color: var(--navy); font-size: .95rem; line-height: 1.3; margin-bottom: 12px; }
+.ap__q svg { width: 22px; height: 22px; color: var(--gold); }
+.ap__opts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.ap__opt {
+  min-height: 50px; display: flex; align-items: center; justify-content: center; gap: 10px;
+  border: 1.5px solid #E2CFA8; background: #fff; border-radius: 12px; font-weight: 800; font-size: 1rem; letter-spacing: .04em; color: var(--ink-2);
+  transition: background .2s, border-color .2s, color .2s, transform .1s, box-shadow .2s;
+}
+.ap__opt:hover { border-color: var(--gold); }
+.ap__opt:active { transform: scale(.98); }
+.ap__opt i { width: 18px; height: 18px; border-radius: 50%; border: 2px solid #C9B48A; position: relative; transition: border-color .2s; }
+.ap__opt.is-on { background: var(--navy); border-color: var(--navy); color: #fff; box-shadow: 0 6px 16px rgba(7,43,89,.25); }
+.ap__opt.is-on i { border-color: #fff; }
+.ap__opt.is-on i::after { content: ''; position: absolute; inset: 3px; border-radius: 50%; background: var(--gold-300); }
+.ap__hint { font-size: .76rem; color: var(--warn); margin-top: 10px; }
+.ap.is-error { border-color: var(--err); animation: shake .45s; }
+
+/* Mensaje adicional en la ventana de éxito */
+.ok__note {
+  display: flex; align-items: center; justify-content: center; gap: 12px; padding: 14px 16px; border-radius: 14px; margin: 4px 0 12px;
+  font-family: var(--f-head); font-weight: 700; font-size: 1.02rem; line-height: 1.3; animation: viewIn .5s .55s var(--ease) both;
+}
+.ok__note svg { width: 26px; height: 26px; flex: none; }
+.ok__note--task { background: var(--gold-50); border: 1.5px solid var(--gold); color: #6B4A12; text-align: left; }
+.ok__note--task svg { color: var(--gold); }
+.ok__note--cheer { background: var(--ok-50); border: 1.5px solid #BFE3CF; color: var(--ok); }
+
 .sheet--ok { border-top: 5px solid var(--ok); overflow: hidden; }
 .ok__icon svg { width: 84px; height: 84px; margin: 8px auto 6px; display: block; }
 .ok__icon circle { stroke: var(--ok); stroke-width: 3; fill: var(--ok-50); stroke-dasharray: 160; stroke-dashoffset: 160; animation: draw .55s var(--ease) forwards; }
