@@ -3,7 +3,7 @@
    ===================================================================== */
 (function () {
   'use strict';
-  window.FINAV_APP_VERSION = '1.1.1';
+  window.FINAV_APP_VERSION = '1.2.0';
 
   const CFG = window.FINAV_CONFIG || {};
   const TZ = CFG.TIMEZONE || 'America/Guayaquil';
@@ -442,8 +442,34 @@
     $('cfTime').textContent = fTime.format(now());
     $('cfMotivoRow').hidden = !pending.motivo;
     $('cfMotivo').textContent = pending.motivo || '';
+
+    // Ingreso a turno: preguntar si es responsable de la apertura de tienda
+    const isIngreso = pending.evento === 'INGRESO';
+    pending.apertura = '';
+    $('cfApertura').hidden = !isIngreso;
+    $('cfApertura').classList.remove('is-error');
+    $('apHint').hidden = false;
+    $$('#cfApertura .ap__opt').forEach((b) => { b.classList.remove('is-on'); b.setAttribute('aria-checked', 'false'); });
+    $('cfYes').disabled = isIngreso;
+
     setStep(3);
-    openModal('confirmModal', 'cfYes');
+    openModal('confirmModal', isIngreso ? null : 'cfYes');
+    if (isIngreso) setTimeout(() => $$('#cfApertura .ap__opt')[0].focus({ preventScroll: true }), 80);
+  }
+
+  function onAperturaClick(e) {
+    const b = e.target.closest('.ap__opt');
+    if (!b || !pending) return;
+    pending.apertura = b.dataset.ap;
+    $$('#cfApertura .ap__opt').forEach((x) => {
+      const on = x === b;
+      x.classList.toggle('is-on', on);
+      x.setAttribute('aria-checked', String(on));
+    });
+    $('cfApertura').classList.remove('is-error');
+    $('apHint').hidden = true;
+    $('cfYes').disabled = false;
+    bumpIdle();
   }
   function closeConfirm() {
     closeModal('confirmModal');
@@ -453,11 +479,17 @@
 
   async function doRegister() {
     if (!pending || !session) return;
+    if (pending.evento === 'INGRESO' && !pending.apertura) {
+      const box = $('cfApertura');
+      box.classList.remove('is-error'); void box.offsetWidth; box.classList.add('is-error');
+      return;
+    }
+    const apertura = pending.apertura || '';
     setLoading('cfYes', true);
     stopIdle();
     let r;
     try {
-      r = await api({ action: 'register', token: session.token, evento: pending.evento, motivo: pending.motivo });
+      r = await api({ action: 'register', token: session.token, evento: pending.evento, motivo: pending.motivo, apertura });
     } catch (err) {
       r = { ok: false, error: 'Error inesperado: ' + err.message };
     }
@@ -468,13 +500,24 @@
       showMsg('eventError', r.error || 'No fue posible registrar el evento.');
       return;
     }
-    showSuccess(r);
+    showSuccess(r, apertura);
   }
 
   // ------------------------------------------------------------------
   // Éxito
   // ------------------------------------------------------------------
-  function showSuccess(r) {
+  const NOTE = {
+    SI: { cls: 'ok__note--task',  icon: '<svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 11l2 2 4-4M9 17h6"/></svg>', txt: 'Debes realizar el check list de tu Área' },
+    NO: { cls: 'ok__note--cheer', icon: '<svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.5 6.8L12 17l-6.1 3.4 1.5-6.8L2.2 9l6.9-.7z"/></svg>', txt: '¡Listos para triunfar hoy!' }
+  };
+
+  function showSuccess(r, apertura) {
+    const note = (r.evento === 'INGRESO' || !r.evento) && NOTE[apertura];
+    $('okNote').hidden = !note;
+    if (note) {
+      $('okNote').className = 'ok__note ' + note.cls;
+      $('okNote').innerHTML = note.icon + '<span>' + note.txt + '</span>';
+    }
     stopLive();
     $$('#stepper li').forEach((li) => { li.classList.add('is-done'); li.classList.remove('is-current'); });
     $('okEvent').textContent = r.eventoLabel;
@@ -738,6 +781,7 @@
     // Confirmación / éxito
     $('cfNo').addEventListener('click', () => { closeConfirm(); bumpIdle(); });
     $('cfYes').addEventListener('click', doRegister);
+    $('cfApertura').addEventListener('click', onAperturaClick);
     $('okAccept').addEventListener('click', acceptSuccess);
 
     // Cerrar hojas tocando el fondo
